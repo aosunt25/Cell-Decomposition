@@ -87,10 +87,6 @@ class Window():
 
 
       
-
-
-
-
 def main():
     Window().creatWindow()
 
