@@ -8,11 +8,14 @@ import Tkinter as tk
 '''
 
 class Window():
-    def __init__(self):
+    def __init__(self,ini):
         #super("Window").__init__
         self.creatWindow()
+        self.ini = 0
+
     def creatWindow(self):
-        autono = Object(1, "red", 20,20)
+
+        autono = Object(5, "red", 20,20)
 
         windowInterface = tk.Tk()
         windowInterface.title("Cell_Decomposition")
@@ -29,8 +32,10 @@ class Window():
         grid.pack()
         car=grid.create_oval(5,5,35,35,fill = "red")
 
-        xd = 5
-        yd = 0
+        print(windowInterface.ini)
+
+        xd = autono.speed
+        yd = autono.speed
         while True:
             grid.move(car,xd,yd)
             p=grid.coords(car)
@@ -58,9 +63,8 @@ class Object():
 
 
 def main():
-    Window().creatWindow()
+    Window(0).creatWindow()
 
 
 if __name__ == '__main__':
-    main()
-
+    main() 
