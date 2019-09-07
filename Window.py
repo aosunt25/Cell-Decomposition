@@ -13,13 +13,14 @@ class Window():
         windowInterface.config(bg="gray")
         windowInterface.update()
         grid = Canvas(windowInterface, width = windowInterface.winfo_screenwidth(), height=120, background="dark gray")
-        grid.pack(anchor="s")
+        grid.pack(anchor="c")
         grid.update()
+        gridY=grid.winfo_screenheight()/3
         gridX=grid.winfo_screenwidth()-10
-        grid.create_line(0,40,gridX,40, fill="yellow")
-        grid.create_line(0,80,gridX,80, fill="yellow")
+        grid.create_line(0,gridY,gridX,gridY, fill="yellow")
+        grid.create_line(0,gridY*2,gridX,gridY*2, fill="yellow")
         grid.pack()
-        car=grid.create_oval(5,5,35,35,fill = "red")
+        car=grid.create_oval(5,5,40,40,fill = "red")
         windowInterface.mainloop()
 
 
