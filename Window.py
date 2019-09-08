@@ -1,6 +1,7 @@
 from tkinter import *
 import tkinter as tk
 import time
+import random
 
 '''
 from Tkinter import *
@@ -8,49 +9,6 @@ import Tkinter as tk
 '''
 ini = 0
 
-<<<<<<< HEAD
-class Window():
-    def __init__(self):
-        #super("Window").__init__
-        self.creatWindow()
-    def creatWindow(self):
-        autono = Object(1, "red", 20,20)
-
-        windowInterface = tk.Tk()
-        windowInterface.title("Cell_Decomposition")
-        frame = Frame(windowInterface,width=windowInterface.winfo_screenwidth(), height=windowInterface.winfo_screenheight())
-        frame.config(bg="gray")
-        frame.pack()
-        frame.update()
-        grid = Canvas(frame, width = frame.winfo_width(), height=frame.winfo_height()/3, background="dark gray")
-        grid.pack(anchor="s")
-        grid.pack()
-        grid.update()
-        gridX=grid.winfo_screenwidth()
-        gridY=grid.winfo_height()/3
-        grid.create_line(0,gridY,gridX,gridY, fill="yellow")
-        grid.create_line(0,gridY*2,gridX,gridY*2, fill="yellow")
-        grid.pack()
-        car=grid.create_oval(5,5,35,35,fill = "red")
-
-        xd = 5
-        yd = 0
-        while True:
-            grid.move(car,xd,yd)
-            p=grid.coords(car)
-            if p[3] >= gridY or p[1] <=0:
-                yd = -yd
-            if p[2] >= gridX or p[0] <=0:
-                break
-            windowInterface.update()
-            time.sleep(0.025) 
-                
-        windowInterface.mainloop()
-
-
-      
-=======
->>>>>>> 57e248741fbfa5889925706364bb034bdb12fe9a
 class Object():
 
     #Class Attribute 
@@ -71,6 +29,7 @@ class Window():
     car = None
     gridY = None
     gridX = None
+    frame = None
     
     windowInterface = tk.Tk()
 
@@ -78,39 +37,78 @@ class Window():
         #super("Window").__init__
         self.creatWindow()
     
+    #Method that changes the state of the animation, 0 does not start, 1 does start
     def changeState(self):
+        #Deletes the last car used in the simulation
+        self.endSimulation()
+
+        # Variable that defines the state of the animations
         ini = 1
-        print(ini)
+
+        # Gives back a random position Y in the grid
+        carYPosition= random.randrange(0,self.grid.winfo_height()-30)
+
+        #Creates the car of the animation with initial position of 0 in X and random position in Y
+        self.car=self.grid.create_oval(0,carYPosition,30,carYPosition+30,fill = "red")
+        
         self.start = 1
-        print("Start" + str(self.start))
+
+        #Calls the method of the animation 
         self.anim()
         return 
 
-    def creatWindow(self):
+    def endSimulation(self):
+        #Deletes the car, ending the simulation 
+        self.grid.delete(self.car)
+        self.car = None
+        return
 
+        
+    def creatWindow(self):
+        
+        #Creates the interface window where the simulation will take place
         self.windowInterface.title("Cell_Decomposition")
-        self.windowInterface.geometry("500x200")
-        self.windowInterface.config(bg="gray")
-        self.windowInterface.update()
-        self.grid = Canvas(self.windowInterface, width = self.windowInterface.winfo_screenwidth(), height=self.windowInterface.winfo_screenheight(), background="dark gray")
-        self.grid.pack(anchor="s")
-        self.grid.update()
-        self.gridX=self.grid.winfo_screenwidth()-10
-        self.gridY=self.grid.winfo_screenheight()-10
-        self.grid.create_line(0,40,self.gridX,40, fill="yellow")
-        self.grid.create_line(0,80,self.gridX,80, fill="yellow")
+
+        #Create a frame the same size of the interface window
+        self.frame = Frame(self.windowInterface,width=self.windowInterface.winfo_screenwidth(), height=self.windowInterface.winfo_screenheight())
+        self.frame.config(bg="gray")
+        self.frame.pack()
+        self.frame.update()
+
+        #Create the road where the car will travel using the Canvas class of Tkinter
+        #Defines the width and height depending of the frame 
+        self.grid = Canvas(self.frame, width = self.frame.winfo_width(), height=self.frame.winfo_height()/3, background="dark gray")
         self.grid.pack()
-        self.car=self.grid.create_oval(5,5,35,35,fill = "red")
-        print(ini)
+        self.grid.update()
+
+        #Variables that help to determin the position of the lineas of the road
+        ##Dividing by three the height of the grid        
+        self.gridX=self.grid.winfo_screenwidth()
+        self.gridY=self.grid.winfo_height()/3
+
+        #Create the lineas of the road, one is at grid/3 and the other one is at grid/3*2
+        self.grid.create_line(0,self.gridY,self.gridX,self.gridY, fill="yellow")
+        self.grid.create_line(0,self.gridY*2,self.gridX,self.gridY*2, fill="yellow")
+
+     
         start = ini
-        button = Button(self.windowInterface, text = "Start", command = self.changeState)
-        button.pack()
-        button.place(x=250, y = 10)
-                    
+
+        #Create the start button of the simulation
+        buttonPositionX = self.frame.winfo_width()/2 -50
+        buttonStart = Button(self.windowInterface, text = "Start", command = self.changeState)
+        buttonStart.pack()
+        buttonStart.place(x=buttonPositionX, y = 350)
+
+        #Button to stop the simulation
+        buttonPositionX = self.frame.winfo_width()/2 + 50
+        buttonEnd = Button(self.windowInterface, text = "End", command = self.endSimulation)
+        buttonEnd.pack()
+        buttonEnd.place(x=650, y = 350)
+
+        ##Starts the main loop of the interface            
         self.windowInterface.mainloop()
 
     def anim(self):
-
         xd = self.autono.speed
         yd = 0
         #ini = ini
@@ -125,6 +123,7 @@ class Window():
                     break
                 self.windowInterface.update()
                 time.sleep(0.025) 
+            
 
        
 
