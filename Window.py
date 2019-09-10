@@ -1,5 +1,5 @@
-from Tkinter import *
-import Tkinter as tk
+from tkinter import *
+import tkinter as tk
 import time
 import random
 
@@ -8,6 +8,13 @@ from Tkinter import *
 import Tkinter as tk
 '''
 ini = 0
+class Cell():
+    def __init__(self, posX0, posX1, posY0, posY1):
+        self.posX0=posX0
+        self.posX1=posX1
+        self.posY0=posY0
+        self.posY1=posY1
+
 
 class Object():
 
@@ -28,6 +35,7 @@ class Window():
 
     grid = None
     obj = []
+    cell = []
 
     car = None
     gridY = None
@@ -79,9 +87,13 @@ class Window():
         self.obj.append(obj5)
 
         try:
-
             for i in range(len(self.obj)):
+                lineStart=self.grid.winfo_height()-self.grid.winfo_height()
+                self.grid.create_line(self.obj[i].initPosX,lineStart,self.obj[i].initPosX,self.grid.winfo_height(),fill = "black", dash=(4,2))
+                self.grid.create_line(self.obj[i].initPosX+50,lineStart,self.obj[i].initPosX+50,self.grid.winfo_height(),fill = "black", dash=(4,2))
                 self.obj[i] = self.grid.create_rectangle(self.obj[i].initPosX,self.obj[i].initPosY,self.obj[i].initPosX + 50,self.obj[i].initPosY + 30,fill="blue")
+               
+                
         except:
             print("ntp")
 
@@ -94,7 +106,14 @@ class Window():
 
     def endSimulation(self):
         #Deletes the car, ending the simulation 
+
         self.grid.delete(self.car)
+        try:
+            for i in range(len(self.obj)):
+                self.grid.delete(self.obj[i])
+        except:
+            print("ntp")
+        self.obj = [] 
         self.car = None
         return
 
@@ -122,9 +141,8 @@ class Window():
         self.gridY=self.grid.winfo_height()/3
 
         #Create the lineas of the road, one is at grid/3 and the other one is at grid/3*2
-        self.grid.create_line(0,self.gridY,self.gridX,self.gridY, fill="yellow")
-        self.grid.create_line(0,self.gridY*2,self.gridX,self.gridY*2, fill="yellow")
-
+        self.grid.create_line(0,self.gridY,self.gridX,self.gridY, fill="yellow",dash=(4, 2))
+        self.grid.create_line(0,self.gridY*2,self.gridX,self.gridY*2, fill="yellow",dash=(4, 2))
         #Create the start button of the simulation
         buttonPositionX = self.frame.winfo_width()/2 -50
         buttonStart = Button(self.windowInterface, text = "Start", command = self.changeState)
