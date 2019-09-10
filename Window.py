@@ -1,5 +1,5 @@
-from tkinter import *
-import tkinter as tk
+from Tkinter import *
+import Tkinter as tk
 import time
 import random
 
@@ -25,7 +25,10 @@ class Window():
     global ini
     start = ini
     autono = Object(5, "red", 20,20)
+
     grid = None
+    obj = []
+
     car = None
     gridY = None
     gridX = None
@@ -50,7 +53,39 @@ class Window():
 
         #Creates the car of the animation with initial position of 0 in X and random position in Y
         self.car=self.grid.create_oval(0,carYPosition,30,carYPosition+30,fill = "red")
-        
+
+        randx1 = random.randrange(100,self.grid.winfo_width()-30)
+        randx2 = random.randrange(100,self.grid.winfo_width()-30)
+        randx3 = random.randrange(100,self.grid.winfo_width()-30)
+        randx4 = random.randrange(100,self.grid.winfo_width()-30)
+        randx5 = random.randrange(100,self.grid.winfo_width()-30)
+
+        randy1 = random.randrange(30,self.grid.winfo_height()-30)
+        randy2 = random.randrange(30,self.grid.winfo_height()-30)
+        randy3 = random.randrange(30,self.grid.winfo_height()-30)
+        randy4 = random.randrange(30,self.grid.winfo_height()-30)
+        randy5 = random.randrange(30,self.grid.winfo_height()-30)
+        obj1 = Object(0,"blue", randx1,randy1 )
+        obj2 = Object(0,"blue", randx2,randy2 )
+        obj3 = Object(0,"blue", randx3,randy3 )
+        obj4 = Object(0,"blue", randx4,randy4 )
+        obj5 = Object(0,"blue", randx5,randy5 )
+
+
+        self.obj.append(obj1)
+        self.obj.append(obj2)
+        self.obj.append(obj3)
+        self.obj.append(obj4)
+        self.obj.append(obj5)
+
+        try:
+
+            for i in range(len(self.obj)):
+                self.obj[i] = self.grid.create_rectangle(self.obj[i].initPosX,self.obj[i].initPosY,self.obj[i].initPosX + 50,self.obj[i].initPosY + 30,fill="blue")
+        except:
+            print("ntp")
+
+
         self.start = 1
 
         #Calls the method of the animation 
@@ -90,9 +125,6 @@ class Window():
         self.grid.create_line(0,self.gridY,self.gridX,self.gridY, fill="yellow")
         self.grid.create_line(0,self.gridY*2,self.gridX,self.gridY*2, fill="yellow")
 
-     
-        start = ini
-
         #Create the start button of the simulation
         buttonPositionX = self.frame.winfo_width()/2 -50
         buttonStart = Button(self.windowInterface, text = "Start", command = self.changeState)
@@ -123,6 +155,8 @@ class Window():
                     break
                 self.windowInterface.update()
                 time.sleep(0.025) 
+                print("Car coordinates")
+                print(p)
             
 
 
