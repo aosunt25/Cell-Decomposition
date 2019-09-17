@@ -1,5 +1,6 @@
 from tkinter import *
 import tkinter as tk
+
 import time
 import random
 
@@ -62,24 +63,28 @@ class Window():
         #Creates the car of the animation with initial position of 0 in X and random position in Y
         self.car=self.grid.create_oval(0,carYPosition,30,carYPosition+30,fill = "red")
 
+        #Randomize the X coordinates of the obstacles in the grid
         randx1 = random.randrange(100,self.grid.winfo_width()-30)
         randx2 = random.randrange(100,self.grid.winfo_width()-30)
         randx3 = random.randrange(100,self.grid.winfo_width()-30)
         randx4 = random.randrange(100,self.grid.winfo_width()-30)
         randx5 = random.randrange(100,self.grid.winfo_width()-30)
 
+        #Randomize the Y coordinates of the obstacles in the grid
         randy1 = random.randrange(30,self.grid.winfo_height()-30)
         randy2 = random.randrange(30,self.grid.winfo_height()-30)
         randy3 = random.randrange(30,self.grid.winfo_height()-30)
         randy4 = random.randrange(30,self.grid.winfo_height()-30)
         randy5 = random.randrange(30,self.grid.winfo_height()-30)
+        #Creates 5 obtacles with the coordinates, color and speed
+        #Speed equals to 0 because the obstacles dont have movement
         obj1 = Object(0,"blue", randx1,randy1 )
         obj2 = Object(0,"blue", randx2,randy2 )
         obj3 = Object(0,"blue", randx3,randy3 )
         obj4 = Object(0,"blue", randx4,randy4 )
         obj5 = Object(0,"blue", randx5,randy5 )
 
-
+        #Adds each element to the array of obstacles
         self.obj.append(obj1)
         self.obj.append(obj2)
         self.obj.append(obj3)
@@ -87,10 +92,19 @@ class Window():
         self.obj.append(obj5)
 
         try:
+            
             for i in range(len(self.obj)):
                 lineStart=self.grid.winfo_height()-self.grid.winfo_height()
-                self.grid.create_line(self.obj[i].initPosX,lineStart,self.obj[i].initPosX,self.grid.winfo_height(),fill = "black", dash=(4,2))
-                self.grid.create_line(self.obj[i].initPosX+50,lineStart,self.obj[i].initPosX+50,self.grid.winfo_height(),fill = "black", dash=(4,2))
+                self.grid.create_line(self.obj[i].initPosX,lineStart,self.obj[i].initPosX,self.grid.winfo_height(),fill = "black", dash=(4,4))
+                self.grid.create_line(self.obj[i].initPosX+50,lineStart,self.obj[i].initPosX+50,self.grid.winfo_height(),fill = "black", dash=(4,4))
+                #Adds the coordinates to the upper and lower cell that the objetc creates 
+                cellMin = Cell(self.obj[i].initPosX,self.obj[i].initPosX+50,0,self.obj[i].initPosY)
+                cellMax = Cell(self.obj[i].initPosX,self.obj[i].initPosX+50,self.obj[i].initPosY+30,self.grid.winfo_height())
+                #Push both upper and lower cell to an array 
+                self.cell.append(cellMin)
+                self.cell.append(cellMax)
+                print(cellMax.posY0)
+                print(cellMin.posY0)
                 self.obj[i] = self.grid.create_rectangle(self.obj[i].initPosX,self.obj[i].initPosY,self.obj[i].initPosX + 50,self.obj[i].initPosY + 30,fill="blue")
                
                 
@@ -173,8 +187,6 @@ class Window():
                     break
                 self.windowInterface.update()
                 time.sleep(0.025) 
-                print("Car coordinates")
-                print(p)
             
 
 
