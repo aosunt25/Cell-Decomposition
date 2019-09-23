@@ -8,7 +8,36 @@ import random
 from Tkinter import *
 import Tkinter as tk
 '''
+
 ini = 0
+class Graph():
+    # Constructor 
+    def __init__(self): 
+  
+        
+        self.graph = defaultdict(list)
+            
+    def addEdge(self,u,v): 
+        self.graph[u].append(v) 
+  
+     
+    def BFS(self, s): 
+  
+        visited = [False] * (len(self.graph)) 
+        queue = [] 
+  
+        
+        queue.append(s) 
+        visited[s] = True
+  
+        while queue: 
+            s = queue.pop(0) 
+            print (s, end = " ") 
+            for i in self.graph[s]: 
+                if visited[i] == False: 
+                    queue.append(i) 
+                    visited[i] = True
+
 class Cell():
     def __init__(self, posX0, posX1, posY0, posY1):
         self.posX0=posX0
@@ -95,14 +124,17 @@ class Window():
             
             for i in range(len(self.obj)):
                 lineStart=self.grid.winfo_height()-self.grid.winfo_height()
+                #Creates the line in the side of each object in the interface 
                 self.grid.create_line(self.obj[i].initPosX,lineStart,self.obj[i].initPosX,self.grid.winfo_height(),fill = "black", dash=(4,4))
                 self.grid.create_line(self.obj[i].initPosX+50,lineStart,self.obj[i].initPosX+50,self.grid.winfo_height(),fill = "black", dash=(4,4))
-                #Adds the coordinates to the upper and lower cell that the objetc creates 
-                cellMin = Cell(self.obj[i].initPosX,self.obj[i].initPosX+50,0,self.obj[i].initPosY)
-                cellMax = Cell(self.obj[i].initPosX,self.obj[i].initPosX+50,self.obj[i].initPosY+30,self.grid.winfo_height())
-                #Push both upper and lower cell to an array 
-                self.cell.append(cellMin)
-                self.cell.append(cellMax)
+                #Adds the coordinates to the lower, middle and upper cell that the object creates 
+                lowerCell = Cell(self.obj[i].initPosX,self.obj[i].initPosX+50,0,self.gridY)
+                middleCell = Cell(self.obj[i].initPosX,self.obj[i].initPosX+50,self.gridY,self.gridY*2)
+                upperCell= Cell(self.obj[i].initPosX,self.obj[i].initPosX+50,self.gridY*2,self.grid.winfo_height())
+                #Push lower, middle and upper cell to an array 
+                self.cell.append(lowerCell)
+                self.cell.append(middleCell)
+                self.cell.append(upperCell)
                 print(cellMax.posY0)
                 print(cellMin.posY0)
                 self.obj[i] = self.grid.create_rectangle(self.obj[i].initPosX,self.obj[i].initPosY,self.obj[i].initPosX + 50,self.obj[i].initPosY + 30,fill="blue")
