@@ -10,13 +10,12 @@ import Tkinter as tk
 '''
 
 ini = 0
-class Graph():
+'''class Graph():
     # Constructor 
     def __init__(self): 
   
         
-        self.graph = defaultdict(list)
-            
+        self.graph = defaultdict(list)    
     def addEdge(self,u,v): 
         self.graph[u].append(v) 
   
@@ -37,6 +36,7 @@ class Graph():
                 if visited[i] == False: 
                     queue.append(i) 
                     visited[i] = True
+'''
 
 class Cell():
     def __init__(self, posX0, posX1, posY0, posY1):
@@ -135,8 +135,6 @@ class Window():
                 self.cell.append(lowerCell)
                 self.cell.append(middleCell)
                 self.cell.append(upperCell)
-                print(cellMax.posY0)
-                print(cellMin.posY0)
                 self.obj[i] = self.grid.create_rectangle(self.obj[i].initPosX,self.obj[i].initPosY,self.obj[i].initPosX + 50,self.obj[i].initPosY + 30,fill="blue")
                
                 
