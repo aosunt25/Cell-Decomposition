@@ -135,10 +135,14 @@ class Window():
 
             try:
                 #If the coordinates in X are in the same range they  merge 
+                # add a cell between the X1 of the new cell and x0 of the next object
                 if (arrX[i]+50)>=arrX[i+1] and arrX[i]!=0:
                     self.addCell(arrX[i], arrX[i+1]+50)
+                    self.addCell(arrX[i+1]+50,arrX[i+2])
                     arrX[i+1]=0   
                 elif arrX[i]!=0:
+                    #Adds a cell the size of the object because is not in the range of any object
+                    #and between the x1 of this object and x0 of the next 
                     self.addCell(arrX[i], arrX[i]+50)
                     self.addCell(arrX[i]+50,arrX[i+1])
                     pass
