@@ -10,33 +10,6 @@ import Tkinter as tk
 '''
 
 ini = 0
-'''class Graph():
-    # Constructor 
-    def __init__(self): 
-  
-        
-        self.graph = defaultdict(list)    
-    def addEdge(self,u,v): 
-        self.graph[u].append(v) 
-  
-     
-    def BFS(self, s): 
-  
-        visited = [False] * (len(self.graph)) 
-        queue = [] 
-  
-        
-        queue.append(s) 
-        visited[s] = True
-  
-        while queue: 
-            s = queue.pop(0) 
-            print (s, end = " ") 
-            for i in self.graph[s]: 
-                if visited[i] == False: 
-                    queue.append(i) 
-                    visited[i] = True
-'''
 
 class Cell():
     def __init__(self, posX0, posX1, posY0, posY1):
@@ -66,6 +39,8 @@ class Window():
     grid = None
     obj = []
     cell = []
+    
+
 
     car = None
     gridY = None
@@ -77,7 +52,14 @@ class Window():
     def __init__(self):
         #super("Window").__init__
         self.creatWindow()
+
     
+    def cellPrint(self):
+        for i in range(len(self.cell)):
+            print(self.cell[i].posX0," ",self.cell[i].posX1)
+            
+
+
     #Method that changes the state of the animation, 0 does not start, 1 does start
     def changeState(self):
         #Deletes the last car used in the simulation
@@ -93,32 +75,24 @@ class Window():
         self.car=self.grid.create_oval(0,carYPosition,30,carYPosition+30,fill = "red")
 
         #Randomize the X coordinates of the obstacles in the grid
-        randx1 = random.randrange(100,self.grid.winfo_width()-30)
-        randx2 = random.randrange(100,self.grid.winfo_width()-30)
-        randx3 = random.randrange(100,self.grid.winfo_width()-30)
-        randx4 = random.randrange(100,self.grid.winfo_width()-30)
-        randx5 = random.randrange(100,self.grid.winfo_width()-30)
-
         #Randomize the Y coordinates of the obstacles in the grid
-        randy1 = random.randrange(30,self.grid.winfo_height()-30)
-        randy2 = random.randrange(30,self.grid.winfo_height()-30)
-        randy3 = random.randrange(30,self.grid.winfo_height()-30)
-        randy4 = random.randrange(30,self.grid.winfo_height()-30)
-        randy5 = random.randrange(30,self.grid.winfo_height()-30)
+        arrX = []
+        arrY = []
+        for i in range(5):
+            arrX.append(random.randrange(100,self.grid.winfo_width()-30))
+            arrY.append(random.randrange(30,self.grid.winfo_height()-30))
+        self.mergeSort(arrX)
+        
+        for i in range(len(arrX)):         
+             print(arrX[i],end=" ") 
+        print() 
         #Creates 5 obtacles with the coordinates, color and speed
         #Speed equals to 0 because the obstacles dont have movement
-        obj1 = Object(0,"blue", randx1,randy1 )
-        obj2 = Object(0,"blue", randx2,randy2 )
-        obj3 = Object(0,"blue", randx3,randy3 )
-        obj4 = Object(0,"blue", randx4,randy4 )
-        obj5 = Object(0,"blue", randx5,randy5 )
+        for i in range(5):
+            obj1=Object(0,"blue", arrX[i],arrY[i] )
+            self.obj.append(obj1)
 
-        #Adds each element to the array of obstacles
-        self.obj.append(obj1)
-        self.obj.append(obj2)
-        self.obj.append(obj3)
-        self.obj.append(obj4)
-        self.obj.append(obj5)
+        self.cellBuild(arrX)
 
         try:
             
@@ -127,14 +101,6 @@ class Window():
                 #Creates the line in the side of each object in the interface 
                 self.grid.create_line(self.obj[i].initPosX,lineStart,self.obj[i].initPosX,self.grid.winfo_height(),fill = "black", dash=(4,4))
                 self.grid.create_line(self.obj[i].initPosX+50,lineStart,self.obj[i].initPosX+50,self.grid.winfo_height(),fill = "black", dash=(4,4))
-                #Adds the coordinates to the lower, middle and upper cell that the object creates 
-                lowerCell = Cell(self.obj[i].initPosX,self.obj[i].initPosX+50,0,self.gridY)
-                middleCell = Cell(self.obj[i].initPosX,self.obj[i].initPosX+50,self.gridY,self.gridY*2)
-                upperCell= Cell(self.obj[i].initPosX,self.obj[i].initPosX+50,self.gridY*2,self.grid.winfo_height())
-                #Push lower, middle and upper cell to an array 
-                self.cell.append(lowerCell)
-                self.cell.append(middleCell)
-                self.cell.append(upperCell)
                 self.obj[i] = self.grid.create_rectangle(self.obj[i].initPosX,self.obj[i].initPosY,self.obj[i].initPosX + 50,self.obj[i].initPosY + 30,fill="blue")
                
                 
@@ -153,6 +119,7 @@ class Window():
 
         self.grid.delete(self.car)
         try:
+            self.cellPrint()
             for i in range(len(self.obj)):
                 self.grid.delete(self.obj[i])
         except:
@@ -161,7 +128,37 @@ class Window():
         self.car = None
         return
 
-        
+    def cellBuild(self, arrX):
+        for i in range(5):
+            if i ==0:
+                self.addCell(0,arrX[i])
+
+            try:
+                #If the coordinates in X are in the same range they  merge 
+                if (arrX[i]+50)>=arrX[i+1] and arrX[i]!=0:
+                    self.addCell(arrX[i], arrX[i+1]+50)
+                    arrX[i+1]=0   
+                elif arrX[i]!=0:
+                    self.addCell(arrX[i], arrX[i]+50)
+                    self.addCell(arrX[i]+50,arrX[i+1])
+                    pass
+                else:
+                    pass              
+            except:
+                self.addCell(arrX[i], arrX[i]+50)
+                self.addCell(arrX[i]+50, self.grid.winfo_width())
+                pass
+            
+    def addCell(self, x0, x1):
+        #Adds the coordinates to the lower, middle and upper cell that the object creates 
+                    lowerCell = Cell(x0,x1,0,self.gridY)
+                    middleCell = Cell(x0,x1,self.gridY,self.gridY*2)
+                    upperCell= Cell(x0,x1,self.gridY*2,self.grid.winfo_height())
+                    #Push lower, middle and upper cell to an array 
+                    self.cell.append(lowerCell)
+                    self.cell.append(middleCell)
+                    self.cell.append(upperCell)
+
     def creatWindow(self):
         
         #Creates the interface window where the simulation will take place
@@ -217,7 +214,39 @@ class Window():
                     break
                 self.windowInterface.update()
                 time.sleep(0.025) 
+
+    def mergeSort(self, arr): 
+        if len(arr) >1: 
+            mid = len(arr)//2 #Finding the mid of the array 
+            L = arr[:mid] # Dividing the array elements  
+            R = arr[mid:] # into 2 halves 
+    
+            self.mergeSort(L) # Sorting the first half 
+            self.mergeSort(R) # Sorting the second half 
+    
+            i = j = k = 0
             
+            # Copy data to temp arrays L[] and R[] 
+            while i < len(L) and j < len(R): 
+                if L[i] < R[j]: 
+                    arr[k] = L[i] 
+                    i+=1
+                else: 
+                    arr[k] = R[j] 
+                    j+=1
+                k+=1
+            
+            # Checking if any element was left 
+            while i < len(L): 
+                arr[k] = L[i] 
+                i+=1
+                k+=1
+            
+            while j < len(R): 
+                arr[k] = R[j] 
+                j+=1
+                k+=1
+       
 
 
 
