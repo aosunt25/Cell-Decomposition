@@ -1,5 +1,6 @@
 from tkinter import *
 import tkinter as tk
+from Graph import Graph
 
 import time
 import random
@@ -12,11 +13,12 @@ import Tkinter as tk
 ini = 0
 
 class Cell():
-    def __init__(self, posX0, posX1, posY0, posY1):
+    def __init__(self, posX0, posX1, posY0, posY1, withObject):
         self.posX0=posX0
         self.posX1=posX1
         self.posY0=posY0
         self.posY1=posY1
+        self.withObject= withObject
 
 
 class Object():
@@ -39,7 +41,7 @@ class Window():
     grid = None
     obj = []
     cell = []
-    
+    graph = Graph()
 
 
     car = None
@@ -93,7 +95,7 @@ class Window():
             self.obj.append(obj1)
 
         self.cellBuild(arrX)
-
+        
         try:
             
             for i in range(len(self.obj)):
@@ -130,38 +132,66 @@ class Window():
 
     def cellBuild(self, arrX):
         for i in range(5):
+            j = i +1
             if i ==0:
-                self.addCell(0,arrX[i])
+                self.addCell(0,arrX[i],False)
 
             try:
                 #If the coordinates in X are in the same range they  merge 
                 # add a cell between the X1 of the new cell and x0 of the next object
-                if (arrX[i]+50)>=arrX[i+1] and arrX[i]!=0:
-                    self.addCell(arrX[i], arrX[i+1]+50)
-                    self.addCell(arrX[i+1]+50,arrX[i+2])
-                    arrX[i+1]=0   
+                if (arrX[i]+50)>=arrX[j] and arrX[i]!=0:
+                    for j in range (5):
+                        if (arrX[i]+50)>=arrX[j] and arrX[i]!=0:
+                            j= j+1
+
+                    self.addCell(arrX[i], arrX[j]+50, True)
+                    self.addCell(arrX[j]+50,arrX[j+1], False)
+                    arrX[j]=0   
                 elif arrX[i]!=0:
                     #Adds a cell the size of the object because is not in the range of any object
                     #and between the x1 of this object and x0 of the next 
-                    self.addCell(arrX[i], arrX[i]+50)
-                    self.addCell(arrX[i]+50,arrX[i+1])
+                    self.addCell(arrX[i], arrX[i]+50, True)
+                    self.addCell(arrX[i]+50,arrX[i+1], False)
                     pass
                 else:
                     pass              
             except:
-                self.addCell(arrX[i], arrX[i]+50)
-                self.addCell(arrX[i]+50, self.grid.winfo_width())
+                self.addCell(arrX[i], arrX[i]+50,True)
+                self.addCell(arrX[i]+50, self.grid.winfo_width(),False)
                 pass
             
-    def addCell(self, x0, x1):
+    def addCell(self, x0, x1, obj):
+        lowerCell = None
+        middleCell = None
+        upperCell = None
+        if obj == TRUE:
         #Adds the coordinates to the lower, middle and upper cell that the object creates 
-                    lowerCell = Cell(x0,x1,0,self.gridY)
-                    middleCell = Cell(x0,x1,self.gridY,self.gridY*2)
-                    upperCell= Cell(x0,x1,self.gridY*2,self.grid.winfo_height())
-                    #Push lower, middle and upper cell to an array 
-                    self.cell.append(lowerCell)
-                    self.cell.append(middleCell)
-                    self.cell.append(upperCell)
+            lowerCell = Cell(x0,x1,0,self.gridY, True)
+            middleCell = Cell(x0,x1,self.gridY,self.gridY*2, True)
+            upperCell= Cell(x0,x1,self.gridY*2,self.grid.winfo_height(),True)
+        else:
+            lowerCell = Cell(x0,x1,0,self.gridY, False)
+            middleCell = Cell(x0,x1,self.gridY,self.gridY*2, False)
+            upperCell= Cell(x0,x1,self.gridY*2,self.grid.winfo_height(),False)
+        #Push lower, middle and upper cell to an array 
+        self.cell.append(lowerCell)
+        self.cell.append(middleCell)
+        self.cell.append(upperCell)
+
+    def graphBuild(self):
+        for i in range(self.cell):
+            if (i + 3)<= range(self.cell):
+                if (i%3)== 1:
+                    self.graph.addEdge(i,i+1)
+                    self.graph.addEdge(i,i+3)
+                elif (i%3)== 2:
+                    self.graph.addEdge(i,i+1)
+                    self.graph.addEdge(i,i-1)
+                    self.graph.addEdge(i,i+3)
+                else:
+                    self.graph.addEdge(i,i-1)
+                    self.graph.addEdge(i,i+3)
+            
 
     def creatWindow(self):
         

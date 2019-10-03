@@ -56,7 +56,7 @@ class Graph():
         self.DFSUtil(v, visited) 
 
 
-graph = Graph()
+'''graph = Graph()
 
 graph.addEdge(0, 1) 
 graph.addEdge(0, 2) 
@@ -70,4 +70,4 @@ graph.addEdge(3, 8)
 graph.addEdge(6, 8) 
 
 #graph.BFS(0)
-graph.DFS(0)
+graph.DFS(0)'''
