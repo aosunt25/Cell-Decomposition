@@ -27,7 +27,7 @@ class Graph():
             s = queue.pop(0)
             
             if s != 0:
-                print(s) 
+                print(s)
             #print(end = " ") 
                 print(self.graph[s]) 
                 for i in range(len(self.graph)): 

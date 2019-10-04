@@ -36,7 +36,7 @@ class Window():
     
     global ini
     start = ini
-    autono = Object(5, "red", 20,20)
+    autono = Object(1, "red", 20,20)
 
     grid = None
     obj = []
@@ -99,8 +99,9 @@ class Window():
         self.cellBuild(arrX)
         self.chechCellObject()
         self.cellPrint()
-        self.graphBuild()
-        self.graph.BFS(1)
+        
+
+        
         
         
         try:
@@ -281,20 +282,47 @@ class Window():
         self.windowInterface.mainloop()
 
     def anim(self):
+        self.graphBuild()
         xd = self.autono.speed
         yd = 0
         #ini = ini
         if self.start == 1:
             self.start = 0
+            
+            print("Cords")
+
+            #Aqui las distancias
+            self.grid.move(self.car,xd,yd)
+            p=self.grid.coords(self.car)
+            for i in range(len(self.cell)):
+
+                if self.cell[i].posX0 < p[0] and self.cell[i].posX1 -p[0] and self.cell[i].posY0 < p[1] and self.cell[i].posY1 > p[1]:
+                        print("Inicio en la celda " + str(i+1))
+                        self.graph.BFS(i+1)
+
             while True:
+                
                 self.grid.move(self.car,xd,yd)
                 p=self.grid.coords(self.car)
+                #print(self.grid.coords(self.car))
+
+                
+
+                for i in range(len(self.cell)):
+                    #Aqui las distancias
+
+                    if self.cell[i].posX0 < p[0] and self.cell[i].posX1 -p[0] and self.cell[i].posY0 < p[1] and self.cell[i].posY1 > p[1]:
+                        print("Estoy en la celda " + str(i+1))
+                
+                #En que celda estoy?
+                
                 if p[3] >= self.gridY or p[1] <=0:
                     yd = -yd
                 if p[2] >= self.gridX or p[0] <=0:
                     break
                 self.windowInterface.update()
                 time.sleep(0.025) 
+
 
     def mergeSort(self, arr): 
         if len(arr) >1: 
