@@ -153,6 +153,8 @@ class Window():
                         if (arrX[i]+50)>=arrX[j] and x1>= arrX[j] and x1<= arrX[j]+50:
                             farX=j
                             x1= arrX[farX]+50
+                        else:
+                            break
 
 
                     self.addCell(arrX[i], x1, True)
@@ -212,6 +214,7 @@ class Window():
     def printGraf(self):
         for i in range(len(self.graph)):
             print(self.graph)
+            
     def creatWindow(self):
         
         #Creates the interface window where the simulation will take place
