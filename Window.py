@@ -186,9 +186,9 @@ class Window():
         upperCell = None
         if obj == TRUE:
         #Adds the coordinates to the lower, middle and upper cell that the object creates 
-            lowerCell = Cell(x0,x1,0,self.gridY, True)
-            middleCell = Cell(x0,x1,self.gridY,self.gridY*2, True)
-            upperCell= Cell(x0,x1,self.gridY*2,self.grid.winfo_height(),True)
+            lowerCell = Cell(x0,x1,0,self.gridY, False)
+            middleCell = Cell(x0,x1,self.gridY,self.gridY*2, False)
+            upperCell= Cell(x0,x1,self.gridY*2,self.grid.winfo_height(),False)
         else:
             lowerCell = Cell(x0,x1,0,self.gridY, False)
             middleCell = Cell(x0,x1,self.gridY,self.gridY*2, False)
