@@ -1,5 +1,5 @@
-from tkinter import *
-import tkinter as tk
+from Tkinter import *
+import Tkinter as tk
 from Graph import Graph
 
 import time
@@ -87,8 +87,9 @@ class Window():
         self.mergeSort(arrX)
         
         for i in range(len(arrX)):         
-             print(arrX[i],end=" ") 
-        print() 
+            print(arrX[i])
+            print(" ") 
+        print()
         #Creates 5 obtacles with the coordinates, color and speed
         #Speed equals to 0 because the obstacles dont have movement
         for i in range(5):
@@ -98,7 +99,7 @@ class Window():
         self.cellBuild(arrX)
         self.cellPrint()
         self.graphBuild()
-        #self.graph.BFS(1)
+        self.graph.BFS(1)
         
         
         try:
@@ -197,7 +198,7 @@ class Window():
 
     def graphBuild(self):
         i = 1
-        for i in range(len(self.cell) + 1 ):
+        for i in range(1,len(self.cell) + 1 ):
             if (i + 3)<= len(self.cell):
                 if (i%3)== 1:
                     self.graph.addEdge(i,i+1)

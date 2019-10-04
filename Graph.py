@@ -20,16 +20,23 @@ class Graph():
         
         queue.append(s) 
         visited[s] = True
-  
+        print("BFS")
+        
         while queue: 
-            s = queue.pop(0) 
-            print(s) 
-            for i in self.graph[s]: 
-                #print(i,"--",i)
-                if visited[i] == False: 
-                    queue.append(i) 
-                    visited[i] = True
+            
+            s = queue.pop(0)
+            
+            if s != 0:
+                print(s) 
+            #print(end = " ") 
+                print(self.graph[s]) 
+                for i in range(len(self.graph)): 
+                    #print(i,"--",i)
+                    if visited[i] == False: 
+                        queue.append(i) 
+                        visited[i] = True
     
+
     def DFSUtil(self, v, visited): 
         # Mark the current node as visited  
         # and print it 
