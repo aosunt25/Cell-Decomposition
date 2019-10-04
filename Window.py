@@ -154,9 +154,10 @@ class Window():
                             farX=j
                             x1= arrX[farX]+50
                         else:
+                            #If the next object is not on the same range in x-axes it exits the for loop 
                             break
 
-
+                    #adds the cells that were merged 
                     self.addCell(arrX[i], x1, True)
                     self.addCell(x1,arrX[farX+1], False)
                     arrX[farX]=-1   
@@ -214,7 +215,7 @@ class Window():
     def printGraf(self):
         for i in range(len(self.graph)):
             print(self.graph)
-            
+
     def creatWindow(self):
         
         #Creates the interface window where the simulation will take place
