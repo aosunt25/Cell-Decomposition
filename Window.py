@@ -57,6 +57,7 @@ class Window():
 
     
     def cellPrint(self):
+
         for i in range(len(self.cell)):
             print(self.cell[i].posX0," ",self.cell[i].posX1)
             
@@ -95,6 +96,10 @@ class Window():
             self.obj.append(obj1)
 
         self.cellBuild(arrX)
+        self.cellPrint()
+        self.graphBuild()
+        #self.graph.BFS(1)
+        
         
         try:
             
@@ -121,7 +126,7 @@ class Window():
 
         self.grid.delete(self.car)
         try:
-            self.cellPrint()
+            
             for i in range(len(self.obj)):
                 self.grid.delete(self.obj[i])
         except:
@@ -133,21 +138,27 @@ class Window():
     def cellBuild(self, arrX):
         for i in range(5):
             j = i +1
+            print(" - ", i)
+            farX = i
+            x1 = arrX[i]+50
             if i ==0:
                 self.addCell(0,arrX[i],False)
-
             try:
                 #If the coordinates in X are in the same range they  merge 
-                # add a cell between the X1 of the new cell and x0 of the next object
-                if (arrX[i]+50)>=arrX[j] and arrX[i]!=0:
+                # add a cell between the x0 of the first object and
+                # x1 of the next object
+                #until the next object is not on the same range 
+                if (arrX[i])<=arrX[j] and x1>= arrX[j] and arrX[i]!=-1:
                     for j in range (5):
-                        if (arrX[i]+50)>=arrX[j] and arrX[i]!=0:
-                            j= j+1
+                        if (arrX[i]+50)>=arrX[j] and x1>= arrX[j] and x1<= arrX[j]+50:
+                            farX=j
+                            x1= arrX[farX]+50
 
-                    self.addCell(arrX[i], arrX[j]+50, True)
-                    self.addCell(arrX[j]+50,arrX[j+1], False)
-                    arrX[j]=0   
-                elif arrX[i]!=0:
+
+                    self.addCell(arrX[i], x1, True)
+                    self.addCell(x1,arrX[farX+1], False)
+                    arrX[farX]=-1   
+                elif arrX[i]!=-1:
                     #Adds a cell the size of the object because is not in the range of any object
                     #and between the x1 of this object and x0 of the next 
                     self.addCell(arrX[i], arrX[i]+50, True)
@@ -156,9 +167,12 @@ class Window():
                 else:
                     pass              
             except:
-                self.addCell(arrX[i], arrX[i]+50,True)
-                self.addCell(arrX[i]+50, self.grid.winfo_width(),False)
+                if (arrX!=-1):
+                    self.addCell(arrX[i], arrX[i]+50,True)
+                    self.addCell(arrX[i]+50, self.grid.winfo_width(),False)
                 pass
+            i = i +2
+            print("--:", i)
             
     def addCell(self, x0, x1, obj):
         lowerCell = None
@@ -179,8 +193,9 @@ class Window():
         self.cell.append(upperCell)
 
     def graphBuild(self):
-        for i in range(self.cell):
-            if (i + 3)<= range(self.cell):
+        i = 1
+        for i in range(len(self.cell) + 1 ):
+            if (i + 3)<= len(self.cell):
                 if (i%3)== 1:
                     self.graph.addEdge(i,i+1)
                     self.graph.addEdge(i,i+3)
@@ -191,8 +206,12 @@ class Window():
                 else:
                     self.graph.addEdge(i,i-1)
                     self.graph.addEdge(i,i+3)
+        
+        
             
-
+    def printGraf(self):
+        for i in range(len(self.graph)):
+            print(self.graph)
     def creatWindow(self):
         
         #Creates the interface window where the simulation will take place

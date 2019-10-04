@@ -6,6 +6,7 @@ class Graph():
 #    lista = ["D","A","B","C","G","E"] 
     def __init__(self): 
         self.graph = defaultdict(list)  
+        
 
     def addEdge(self,u,v): 
         self.graph[u].append(v) 
@@ -24,7 +25,7 @@ class Graph():
             s = queue.pop(0) 
             print(s) 
             for i in self.graph[s]: 
-                
+                #print(i,"--",i)
                 if visited[i] == False: 
                     queue.append(i) 
                     visited[i] = True
