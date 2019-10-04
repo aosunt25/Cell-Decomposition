@@ -1,5 +1,5 @@
-from Tkinter import *
-import Tkinter as tk
+from tkinter import *
+import tkinter as tk
 from Graph import Graph
 
 import time
@@ -97,6 +97,7 @@ class Window():
             self.obj.append(obj1)
 
         self.cellBuild(arrX)
+        self.chechCellObject()
         self.cellPrint()
         self.graphBuild()
         self.graph.BFS(1)
@@ -212,7 +213,29 @@ class Window():
                     self.graph.addEdge(i,i+3)
         
         
-            
+    def chechCellObject(self):
+        for i in range(len(self.cell)):
+            for j in range(len(self.obj)): 
+                if(self.cell[i].posX0<=self.obj[j].initPosX and self.cell[i].posX1>=self.obj[j].initPosX+50):  
+                    if(self.cell[i].posY0>= self.obj[j].initPosY and self.cell[i].posY0<= self.obj[j].initPosY +30 ):
+                        print(" -P- ", self.cell[i].posX0, "--", self.cell[i].posX1)
+                        print(" -L- ", self.obj[j].initPosX, "-L-", self.obj[j].initPosX+50)
+                        self.cell[i].withObject=True
+                        pass
+                    elif(self.cell[i].posY1 >= self.obj[j].initPosY and self.cell[i].posY1<= self.obj[j].initPosY +30):
+                        print(" -H- ", self.cell[i].posX0, "--", self.cell[i].posX1)
+                        print(" -L- ", self.obj[j].initPosX, "-L-", self.obj[j].initPosX+50)
+                        self.cell[i].withObject=True
+                        pass
+                    elif(self.cell[i].posY0<=self.obj[j].initPosY and self.cell[i].posY1>=self.obj[j].initPosY+30):
+                        print(" -J- ", self.cell[i].posX0, "--", self.cell[i].posX1)
+                        print(" -L- ", self.obj[j].initPosX, "-L-", self.obj[j].initPosX+50)
+                        self.cell[i].withObject=True
+                        pass
+        for i in range(len(self.cell)):
+            print(self.cell[i].withObject, i)
+
+
     def printGraf(self):
         for i in range(len(self.graph)):
             print(self.graph)
