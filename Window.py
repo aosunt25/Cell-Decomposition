@@ -139,10 +139,10 @@ class Window():
         return
 
     def cellBuild(self, arrX):
+        
         amountOfObject=iter(range(5))
 
         for i in amountOfObject:
-            print("Object Num:",i)
             j = i + 1
             farX = i
             x1 = arrX[i]+50
@@ -156,8 +156,6 @@ class Window():
                 if (arrX[i])<=arrX[j] and x1>= arrX[j]:
                     for j in range (5):
                         if (arrX[i])<=arrX[j] and x1>= arrX[j]:
-                            
-                            print("Object Num 2:",j, "Valor X de J: ", arrX[j])
                             farX=j
                             x1= arrX[farX]+50
 
@@ -314,6 +312,7 @@ class Window():
                 if self.cell[i].posX0 < p[0] and self.cell[i].posX1 -p[0] and self.cell[i].posY0 < p[1] and self.cell[i].posY1 > p[1]:
                         print("Inicio en la celda " + str(i))
                         self.graph.BFS(i)
+                        self.graph.DFS(i)
 
             while True:
                 
