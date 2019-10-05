@@ -15,6 +15,8 @@ class Graph():
     def BFS(self, s): 
   
         visited = [False] * (len(self.graph)) 
+        print("visited len: ", len(visited)+1)
+        print("graph len: ", len(self.graph))
         queue = [] 
   
         
@@ -26,15 +28,14 @@ class Graph():
             
             s = queue.pop(0)
             
-            if s != 0:
-                print(s)
-            #print(end = " ") 
-                print(self.graph[s]) 
-                for i in range(len(self.graph)): 
-                    #print(i,"--",i)
-                    if visited[i] == False: 
-                        queue.append(i) 
-                        visited[i] = True
+            print(s)
+                #print(end = " ") 
+            #print("-",self.graph[s]) 
+            for i in self.graph[s]:                
+                if visited[i] == False:   
+                    queue.append(i) 
+                    #print(queue)
+                    visited[i] = True
     
 
     def DFSUtil(self, v, visited): 

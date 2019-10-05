@@ -139,9 +139,11 @@ class Window():
         return
 
     def cellBuild(self, arrX):
-        for i in range(5):
-            j = i +1
-            print(" - ", i)
+        amountOfObject=iter(range(5))
+
+        for i in amountOfObject:
+            print("Object Num:",i)
+            j = i + 1
             farX = i
             x1 = arrX[i]+50
             if i ==0:
@@ -151,34 +153,40 @@ class Window():
                 # add a cell between the x0 of the first object and
                 # x1 of the next object
                 #until the next object is not on the same range 
-                if (arrX[i])<=arrX[j] and x1>= arrX[j] and arrX[i]!=-1:
+                if (arrX[i])<=arrX[j] and x1>= arrX[j]:
                     for j in range (5):
-                        if (arrX[i]+50)>=arrX[j] and x1>= arrX[j] and x1<= arrX[j]+50:
+                        if (arrX[i])<=arrX[j] and x1>= arrX[j]:
+                            
+                            print("Object Num 2:",j, "Valor X de J: ", arrX[j])
                             farX=j
                             x1= arrX[farX]+50
-                        else:
-                            #If the next object is not on the same range in x-axes it exits the for loop 
-                            break
 
                     #adds the cells that were merged 
+                    
+                    for z in range(farX-i):
+                        next(amountOfObject) 
+                    print("FarX: ", farX)
                     self.addCell(arrX[i], x1, True)
-                    self.addCell(x1,arrX[farX+1], False)
-                    arrX[farX]=-1   
-                elif arrX[i]!=-1:
+                    if farX<4:
+                        self.addCell(x1,arrX[farX+1], False)
+                    else:
+                        self.addCell(x1,self.grid.winfo_width(), False)
+                     
+                else:
+                    print("Object Num a:",i)
                     #Adds a cell the size of the object because is not in the range of any object
                     #and between the x1 of this object and x0 of the next 
                     self.addCell(arrX[i], arrX[i]+50, True)
                     self.addCell(arrX[i]+50,arrX[i+1], False)
-                    pass
-                else:
-                    pass              
+                    pass            
             except:
                 if (arrX!=-1):
+                    print("Object Num b:",i)
                     self.addCell(arrX[i], arrX[i]+50,True)
                     self.addCell(arrX[i]+50, self.grid.winfo_width(),False)
                 pass
-            i = i +2
-            print("--:", i)
+            
+            
             
     def addCell(self, x0, x1, obj):
         lowerCell = None
@@ -199,42 +207,49 @@ class Window():
         self.cell.append(upperCell)
 
     def graphBuild(self):
-        i = 1
-        for i in range(1,len(self.cell) + 1 ):
+        for i in range(1,len(self.cell)+1):
             if (i + 3)<= len(self.cell):
+                print("graph i:",i)
                 if (i%3)== 1:
-                    self.graph.addEdge(i,i+1)
-                    self.graph.addEdge(i,i+3)
+                    self.graph.addEdge(i-1,i)
+                    self.graph.addEdge(i-1,i+2)
                 elif (i%3)== 2:
-                    self.graph.addEdge(i,i+1)
-                    self.graph.addEdge(i,i-1)
-                    self.graph.addEdge(i,i+3)
+                    self.graph.addEdge(i-1,i-2)
+                    self.graph.addEdge(i-1,i)
+                    self.graph.addEdge(i-1,i+2)
                 else:
-                    self.graph.addEdge(i,i-1)
-                    self.graph.addEdge(i,i+3)
+                    self.graph.addEdge(i-1,i)
+                    self.graph.addEdge(i-1,i+2)
+            else:
+                if (i%3)== 1:
+                    self.graph.addEdge(i-1,i)
+                    self.graph.addEdge(i-1,i-2)
+                elif (i%3)== 2:
+                    self.graph.addEdge(i-1,i)
+                    self.graph.addEdge(i-1,i-2)
+                    self.graph.addEdge(i-1,i-4)
+                else:
+                    self.graph.addEdge(i-1,i-2)
+                    self.graph.addEdge(i-1,i-4)
         
-        
+    #Method tha checks which cell has an object inside    
     def chechCellObject(self):
         for i in range(len(self.cell)):
             for j in range(len(self.obj)): 
+                #If the size of the object is inside de cell enters
                 if(self.cell[i].posX0<=self.obj[j].initPosX and self.cell[i].posX1>=self.obj[j].initPosX+50):  
+                    #if the y0 of the object is in range of the cell
                     if(self.cell[i].posY0>= self.obj[j].initPosY and self.cell[i].posY0<= self.obj[j].initPosY +30 ):
-                        print(" -P- ", self.cell[i].posX0, "--", self.cell[i].posX1)
-                        print(" -L- ", self.obj[j].initPosX, "-L-", self.obj[j].initPosX+50)
                         self.cell[i].withObject=True
                         pass
+                    #if the y1 of the object is in range of the cell    
                     elif(self.cell[i].posY1 >= self.obj[j].initPosY and self.cell[i].posY1<= self.obj[j].initPosY +30):
-                        print(" -H- ", self.cell[i].posX0, "--", self.cell[i].posX1)
-                        print(" -L- ", self.obj[j].initPosX, "-L-", self.obj[j].initPosX+50)
                         self.cell[i].withObject=True
                         pass
+                    #if the object is inside of the cell
                     elif(self.cell[i].posY0<=self.obj[j].initPosY and self.cell[i].posY1>=self.obj[j].initPosY+30):
-                        print(" -J- ", self.cell[i].posX0, "--", self.cell[i].posX1)
-                        print(" -L- ", self.obj[j].initPosX, "-L-", self.obj[j].initPosX+50)
                         self.cell[i].withObject=True
                         pass
-        for i in range(len(self.cell)):
-            print(self.cell[i].withObject, i)
 
 
     def printGraf(self):
@@ -297,8 +312,8 @@ class Window():
             for i in range(len(self.cell)):
 
                 if self.cell[i].posX0 < p[0] and self.cell[i].posX1 -p[0] and self.cell[i].posY0 < p[1] and self.cell[i].posY1 > p[1]:
-                        print("Inicio en la celda " + str(i+1))
-                        self.graph.BFS(i+1)
+                        print("Inicio en la celda " + str(i))
+                        self.graph.BFS(i)
 
             while True:
                 
@@ -308,11 +323,11 @@ class Window():
 
                 
 
-                for i in range(len(self.cell)):
+                #for i in range(len(self.cell)):
                     #Aqui las distancias
 
-                    if self.cell[i].posX0 < p[0] and self.cell[i].posX1 -p[0] and self.cell[i].posY0 < p[1] and self.cell[i].posY1 > p[1]:
-                        print("Estoy en la celda " + str(i+1))
+                    #if self.cell[i].posX0 < p[0] and self.cell[i].posX1 -p[0] and self.cell[i].posY0 < p[1] and self.cell[i].posY1 > p[1]:
+                       #print("Estoy en la celda " + str(i+1))
                 
                 #En que celda estoy?
                 
