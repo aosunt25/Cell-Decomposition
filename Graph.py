@@ -4,9 +4,9 @@ class Graph():
     # Constructor
     # 
 #    lista = ["D","A","B","C","G","E"] 
-    def __init__(self): 
+    def __init__(self, arr): 
         self.graph = defaultdict(list)  
-        
+        self.arr = arr
 
     def addEdge(self,u,v): 
         self.graph[u].append(v) 
@@ -15,8 +15,6 @@ class Graph():
     def BFS(self, s): 
   
         visited = [False] * (len(self.graph)) 
-        print("visited len: ", len(visited)+1)
-        print("graph len: ", len(self.graph))
         queue = [] 
   
         
@@ -27,8 +25,8 @@ class Graph():
         while queue: 
             
             s = queue.pop(0)
-            
-            print(s)
+            self.arr.append(s)
+            #print(s)
             #print(end = " ") 
             #print("-",self.graph[s]) 
             for i in self.graph[s]:                
@@ -42,7 +40,7 @@ class Graph():
         # Mark the current node as visited  
         # and print it 
         visited[v] = True
-        print(v) 
+        
   
         # Recur for all the vertices  
         # adjacent to this vertex 

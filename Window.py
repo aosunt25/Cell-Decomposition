@@ -41,7 +41,10 @@ class Window():
     grid = None
     obj = []
     cell = []
-    graph = Graph()
+    #The list with any search algorithm of the graph
+    arrGraph = []
+    graph = Graph(arrGraph)
+   
 
 
     car = None
@@ -183,9 +186,7 @@ class Window():
                     self.addCell(arrX[i], arrX[i]+50,True)
                     self.addCell(arrX[i]+50, self.grid.winfo_width(),False)
                 pass
-            
-            
-            
+                      
     def addCell(self, x0, x1, obj):
         lowerCell = None
         middleCell = None
@@ -216,7 +217,7 @@ class Window():
                     self.graph.addEdge(i-1,i)
                     self.graph.addEdge(i-1,i+2)
                 else:
-                    self.graph.addEdge(i-1,i)
+                    self.graph.addEdge(i-1,i-2)
                     self.graph.addEdge(i-1,i+2)
             else:
                 if (i%3)== 1:
@@ -248,7 +249,6 @@ class Window():
                     elif(self.cell[i].posY0<=self.obj[j].initPosY and self.cell[i].posY1>=self.obj[j].initPosY+30):
                         self.cell[i].withObject=True
                         pass
-
 
     def printGraf(self):
         for i in range(len(self.graph)):
@@ -312,7 +312,9 @@ class Window():
                 if self.cell[i].posX0 < p[0] and self.cell[i].posX1 -p[0] and self.cell[i].posY0 < p[1] and self.cell[i].posY1 > p[1]:
                         print("Inicio en la celda " + str(i))
                         self.graph.BFS(i)
-                        self.graph.DFS(i)
+                        for i in range(len(self.arrGraph)):
+                            print("-",self.arrGraph[i])
+                        #self.graph.DFS(i)
 
             while True:
                 
@@ -337,7 +339,7 @@ class Window():
                 self.windowInterface.update()
                 time.sleep(0.025) 
 
-
+    
     def mergeSort(self, arr): 
         if len(arr) >1: 
             mid = len(arr)//2 #Finding the mid of the array 
