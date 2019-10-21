@@ -40,7 +40,6 @@ class Graph():
         # Mark the current node as visited  
         # and print it 
         visited[v] = True
-        
   
         # Recur for all the vertices  
         # adjacent to this vertex 

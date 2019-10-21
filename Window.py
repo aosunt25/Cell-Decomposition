@@ -64,8 +64,6 @@ class Window():
         for i in range(len(self.cell)):
             print(self.cell[i].posX0," ",self.cell[i].posX1)
             
-
-
     #Method that changes the state of the animation, 0 does not start, 1 does start
     def changeState(self):
         #Deletes the last car used in the simulation
@@ -312,6 +310,7 @@ class Window():
                 if self.cell[i].posX0 < p[0] and self.cell[i].posX1 -p[0] and self.cell[i].posY0 < p[1] and self.cell[i].posY1 > p[1]:
                         print("Inicio en la celda " + str(i))
                         self.graph.BFS(i)
+                        self.checkGrafObject()
                         for i in range(len(self.arrGraph)):
                             print("-",self.arrGraph[i])
                         #self.graph.DFS(i)
@@ -339,7 +338,12 @@ class Window():
                 self.windowInterface.update()
                 time.sleep(0.025) 
 
-    
+    def checkGrafObject(self):
+        for i in range(len(self.arrGraph)):
+            j = self.arrGraph[i]
+            if(self.cell[j].withObject==True):
+                self.arrGraph[i]=-1
+
     def mergeSort(self, arr): 
         if len(arr) >1: 
             mid = len(arr)//2 #Finding the mid of the array 
